@@ -20,13 +20,13 @@ HOST=10.211.55.24
 HOST_DIR=gnuplot
 PORT=22
 BASE_SETTING="set terminal png size 800,600 enhanced font 'Helvetica,20';\
-    set output '$HOST_DIR/$OUTPUT_FILE'"
+    set output '$OUTPUT_FILE'"
 
 echo "Send $SCRIPT_FILE to $USER@$HOST:$HOST_DIR/script.p with $PORT port number..."
 scp -P $PORT $SCRIPT_FILE $USER@$HOST:$HOST_DIR/script.p
 
 echo "Execute $SCRIPT_FILE in server..."
-ssh $USER@$HOST -p $PORT "gnuplot -e \"$BASE_SETTING; load '$HOST_DIR/script.p'\""
+ssh $USER@$HOST -p $PORT "cd $HOST_DIR && gnuplot -e \"$BASE_SETTING; load 'script.p'\""
 
 echo "Receive output image to $OUTPUT_FILE..."
 scp -P $PORT $USER@$HOST:$HOST_DIR/output.png $OUTPUT_FILE
